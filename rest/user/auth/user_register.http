@@ -1,0 +1,7 @@
+POST http://localhost:55555/users/register HTTP/1.1
+content-type: application/json
+
+{
+    "phone": "+99362222222",
+    "password": "test"
+}

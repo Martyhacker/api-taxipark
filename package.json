@@ -1,0 +1,37 @@
+{
+  "name": "api-taxipark",
+  "version": "1.0.0",
+  "description": "Taxi Ordering app backend RESTApi",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "reset": "node utils/sync & npx sequelize db:seed:all"
+  },
+  "author": "Peykam Dev Ltd.",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^1.4.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.0",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.7.0",
+    "firebase": "^9.22.2",
+    "fs": "^0.0.1-security",
+    "helmet": "^7.0.0",
+    "http": "^0.0.1-security",
+    "ioredis": "^5.3.2",
+    "jsonwebtoken": "^9.0.0",
+    "morgan": "^1.10.0",
+    "otp-generator": "^4.0.1",
+    "path": "^0.12.7",
+    "pg": "^8.11.0",
+    "sequelize": "^6.32.0",
+    "sequelize-cli": "^6.6.1",
+    "socket.io": "^4.6.2",
+    "util": "^0.12.5",
+    "xss-clean": "^0.1.4"
+  }
+}
