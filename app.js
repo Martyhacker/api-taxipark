@@ -3,10 +3,6 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const AppError = require("./utils/appError");
 const app = express();
-const { Server } = require("socket.io");
-const { createServer } = require("http");
-const jwt = require("jsonwebtoken");
-const {Driver} = require("./models")
 
 
 app.use(require("helmet")());
@@ -18,39 +14,6 @@ const limiter = require("express-rate-limit")({
 app.use(
   cors()
 );
-
-// const httpServer = createServer(app);
-// const io = new Server(httpServer, {
-//   cors: {
-//     origin: "*",
-//     methods: ["GET", "POST"]
-//   }
-// })
-
-// io.use((socket, next) => {
-//   if (socket.handshake.headers.authorization) {
-//     const { authorization } = socket.handshake.headers.authorization;
-//     const token = authorization.split(" ")[1];
-//     jwt.verify(token, process.env.BCRYPT_SECRET, async (err, decoded) => {
-//       if (err) {
-//         throw new AppError("Invalid token supplied", 401);
-//       }
-//       const driver = await Driver.findOne({ where: { id: decoded.id } });
-//       if (!driver) {
-//         throw new AppError("driver not found", 404);
-//       }
-//       socket.driver = driver;
-//       return next();
-//     })
-//   }else{
-//     throw new AppError("Auth error!");
-//   }
-// })
-
-// io.on("connection", onConnection(io));
-
-// app.use(express.json());
-// app.use(express.urlencoded({ extended: true }));
 
 app.use(require("morgan")("dev"));
 app.use(require("cookie-parser")());
@@ -66,6 +29,7 @@ app.use(express.urlencoded({ extended: true, limit: "600mb" }));
 // ROUTES
 app.use("/users", require("./routes/users/user.router"));
 app.use("/admin", require("./routes/admin/admin.router"));
+app.use("/drivers", require("./routes/driver/driver.router"));
 // app.use("/public", require("./routes/public/publicRouter"));
 
 app.all("*", (req, res, next) => {

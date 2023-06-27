@@ -30,7 +30,6 @@
     "pg": "^8.11.0",
     "sequelize": "^6.32.0",
     "sequelize-cli": "^6.6.1",
-    "socket.io": "^4.6.2",
     "util": "^0.12.5",
     "xss-clean": "^0.1.4"
   }
