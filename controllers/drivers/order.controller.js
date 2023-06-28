@@ -15,9 +15,9 @@ exports.updateMyOrder = catchAsync(async (req, res, next) => {
     return res.status(200).send(order);
 });
 
-exports.myOrderStatus = catchAsync(async (req, res, next) => {
+exports.changeOrderStatus = catchAsync(async (req, res, next) => {
     const order = await Order.findOne({ where: { id: req.params.id } });
-    if(order.driverId != req.user.id)
+    if (order.driverId != req.user.id)
         return next(new AppError("This is not yours"));
     if (!order)
         return next(new AppError("This order not found", 404));
@@ -28,13 +28,18 @@ exports.myOrderStatus = catchAsync(async (req, res, next) => {
     if (status !== "CANCELLED" && status !== "ACCEPTED" && status !== "FINISHED")
         return next(new AppError("Invalid status entered", 500));
 
-    if (status == "CANCELLED") {
-        await order.update({
-            driverId: null,
-            status: "WAITING"
-        })
-    } else {
-        await order.update({status:status});
+    switch (status) {
+        case "CANCELLED":
+            await order.update({ driverId: null, status: "WAITING" })
+            break;
+        case "ACCEPTED":
+            await order.update({ status: status, accepted_time: new Date(), isAvailable: false })
+            break;
+        case "FINISHED":
+            await order.update({ status: status, ended_time: new Date(), isAvailable: true })
+        default:
+            await order.update({ status: status });
+            break;
     }
     return res.status(200).send(order);
 })

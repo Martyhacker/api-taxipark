@@ -2,9 +2,9 @@ const r = require("express").Router();
 const {
     getMyOrders,
     updateMyOrder,
-    myOrderStatus
+    changeOrderStatus
 } = require("../../../controllers/drivers/order.controller");
 r.get("/",getMyOrders);
 r.patch("/:id", updateMyOrder);
-r.post("/status/:id", myOrderStatus);
+r.post("/status/:id", changeOrderStatus);
 module.exports = r;
