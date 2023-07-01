@@ -3,17 +3,17 @@ const jwt = require("jsonwebtoken");
 const { promisify } = require("util");
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
-const { User } = require("../../models");
+const { User, Order } = require("../../models");
 const { createSendToken } = require("./../../utils/createSendToken");
 require("dotenv").config();
 exports.signup = catchAsync(async (req, res, next) => {
-  const { username, phone, password } = req.body;
+  const { username, phone, address, password } = req.body;
   let found = await User.findOne({ where: { phone } });
   
   if (found) {
     return res.json({ code: 1, msg: "user already registered" });
   }
-  const newUser = await User.create(req.body);
+  const newUser = await User.create({username, phone, address, password});
 
   createSendToken(newUser, 201, res);
 });
@@ -87,3 +87,36 @@ exports.login = catchAsync(async (req, res, next) => {
   }
   createSendToken(user, 200, res);
 });
+
+exports.profile = catchAsync(async(req,res,next)=>{
+  return res.status(200).send(req.user);
+})
+exports.updatePassword = catchAsync(async(req,res,next)=>{
+  const user = await User.findOne({where: {id: req.user.id}});
+  const {currentPassword, newPassword} = req.body;
+  if(!currentPassword || !newPassword)
+    return next(new AppError("Provide currentPassword and newPassword", 400));
+  if(!(await bcrypt.compare(currentPassword, user.password)))
+    return next(new AppError("Current Password is incorrect",401));
+  
+  user.password = await bcrypt.hash(newPassword, parseInt(process.env.BCRYPT_ROUND));
+  await user.save();
+  createSendToken(user, 200, res);
+})
+exports.updateProfile = catchAsync(async (req,res,next)=>{
+  const user = await User.findOne({where: {id: req.user.id}});
+  const {username, address} = req.body;
+  await user.update({username, address});
+  return res.status(200).send(user);
+});
+exports.updateFcm = catchAsync(async(req,res,next)=>{
+  const user = await User.findOne({where: {id: req.user.id}});
+  const {fcmToken} = req.body;
+  await user.update({fcmToken});
+  return res.status(200).send(user);
+});
+exports.deleteMe = catchAsync(async(req,res,next)=>{
+  const orders = await Order.findAll({where: {userId: req.user.id}});
+  await User.destroy({where: {phone: req.user.phone}});
+  return res.status(200).json({msg: "Deleted"});
+})
