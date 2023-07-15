@@ -1,12 +1,19 @@
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
-const {Order, User, Driver} = require("../../models/")
+const {Order, User, Driver} = require("../../models/");
+const { order_search } = require("../../utils/search_body");
 exports.getAllOrders = catchAsync(async(req,res,next)=>{
+    const {offset, keyword, status, type, userId, driverId} = req.query;
     const limit = req.query.limit || 20;
-    const offset = req.query.offset;
+    var where = {};
+    if(keyword) where = order_search(keyword);
+    if(status) where.status = status;
+    if(type) where.order_type = type;
+    if(userId) where.userId = userId;
+    if(driverId) where.driverId = driverId;
     const attributes = {exclude: ["distance","driverId","userId", "counter_start_time", "time", "start_lat","start_lon","dest_lat","dest_lon", "accepted_time","ended_time"]};
     const {count, rows} = await Order.findAndCountAll({
-        limit, offset, attributes
+        where, limit, offset, attributes
     });
     return res.status(200).json({count, data:rows});
 });

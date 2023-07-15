@@ -9,6 +9,16 @@ const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../config/config.json')[env];
 const db = {};
 
+config.dialectOptions = {
+  useUTC: false,
+  typeCast: function (field, next) { // for reading from database
+    if (field.type === 'DATETIME') {
+      return field.string()
+    }
+    return next()
+  }
+}
+
 let sequelize;
 if (config.use_env_variable) {
   sequelize = new Sequelize(process.env[config.use_env_variable], config);

@@ -41,7 +41,7 @@ exports.sendNotification = async (to, title, body) => {
                 title: title,
                 body: body
             },
-            token: token,
+            token: to,
         });
 
         admin.messaging().send(messages)
