@@ -11,8 +11,8 @@ exports.getAllUsers = catchAsync(async (req,res,next)=>{
     if(keyword) where = user_search(keyword);
     const {count, rows} = await User.findAndCountAll({
         where,
-        limit, offset, attributes: {exclude : ["createdAt"]}});
-    return res.status(200).json({count, rows});
+        limit, offset, attributes: {exclude : ["updatedAt", "password", "fcmToken"]}});
+    return res.status(200).json({count, data:rows});
 });
 exports.getUserByID = catchAsync(async(req,res,next)=>{
     const user = await User.findOne({where: {id: req.params.id}});

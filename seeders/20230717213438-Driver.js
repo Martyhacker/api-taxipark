@@ -3,15 +3,16 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up (queryInterface, Sequelize) {
+  async up(queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Users",
+      "Drivers",
       [
         {
-          username: "test",
+          username: "Daniel Driver",
           password: await bcrypt.hash("123456", parseInt(process.env.BCRYPT_ROUND)),
-          phone: "+99362980257",
-          address: "This is test Address",
+          lat: 37.938909783732505,
+          lng: 58.39080121860015,
+          phone: "+99367000000",
           createdAt: Sequelize.fn("now"),
           updatedAt: Sequelize.fn("now"),
         },
@@ -20,6 +21,6 @@ module.exports = {
     );
   },
 
-  async down (queryInterface, Sequelize) {
+  async down(queryInterface, Sequelize) {
   }
 };

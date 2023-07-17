@@ -2,6 +2,7 @@ const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
 const { Driver, User, Order } = require("../../models/");
 const { driver_search } = require("../../utils/search_body");
+const bcrypt = require("bcryptjs");
 require("dotenv").config();
 
 exports.getAllDrivers = catchAsync(async (req, res, next) => {
@@ -19,6 +20,13 @@ exports.getAllDrivers = catchAsync(async (req, res, next) => {
     });
     return res.status(200).json({ count, data: rows });
 });
+
+exports.getDriverByID = catchAsync(async (req, res, next) => {
+    const driver = await Driver.findOne({ where: { id: req.params.id } });
+    if (!driver)
+        return next(new AppError("This driver not found", 404));
+    return res.status(200).send(driver);
+});
 exports.addDriver = catchAsync(async (req, res, next) => {
     const { username, phone, password } = req.body;
     const found = await Driver.findOne({ where: { phone: phone } });
@@ -33,15 +41,17 @@ exports.addDriver = catchAsync(async (req, res, next) => {
 })
 
 exports.updateDriver = catchAsync(async (req, res, next) => {
+    const {username, phone} = req.body;
     const driver = await Driver.findOne({ where: { id: req.params.id } });
     if (!driver)
         return next(new AppError("This driver not found", 404));
-    await driver.update(req.body);
+    await driver.update({username, phone});
     return res.status(200).send(driver);
 });
 
 exports.changePassword = catchAsync(async (req, res, next) => {
     const { password } = req.body;
+    console.log(req.body);
     const driver = await Driver.findOne({ where: { id: req.params.id } });
     if (!driver)
         return next(new AppError("This driver not found", 404));

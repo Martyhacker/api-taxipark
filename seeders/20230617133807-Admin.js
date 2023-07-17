@@ -1,5 +1,6 @@
 'use strict';
 const bcrypt = require("bcryptjs");
+require("dotenv").config();
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -8,7 +9,7 @@ module.exports = {
       [
         {
           username: "admin",
-          password: await bcrypt.hash("admin", 12),
+          password: await bcrypt.hash("admin", parseInt(process.env.BCRYPT_ROUND)),
           createdAt: Sequelize.fn("now"),
           updatedAt: Sequelize.fn("now"),
         },

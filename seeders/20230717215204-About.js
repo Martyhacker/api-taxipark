@@ -1,17 +1,13 @@
 'use strict';
-const bcrypt = require("bcryptjs");
-require("dotenv").config();
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up (queryInterface, Sequelize) {
     await queryInterface.bulkInsert(
-      "Users",
+      "About",
       [
         {
-          username: "test",
-          password: await bcrypt.hash("123456", parseInt(process.env.BCRYPT_ROUND)),
-          phone: "+99362980257",
-          address: "This is test Address",
+          text: "Edit this text",
           createdAt: Sequelize.fn("now"),
           updatedAt: Sequelize.fn("now"),
         },
@@ -21,5 +17,11 @@ module.exports = {
   },
 
   async down (queryInterface, Sequelize) {
+    /**
+     * Add commands to revert seed here.
+     *
+     * Example:
+     * await queryInterface.bulkDelete('People', null, {});
+     */
   }
 };

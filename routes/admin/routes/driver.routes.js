@@ -1,6 +1,7 @@
 const router = require("express").Router();
-const {addDriver,getAllDrivers,updateDriver,changePassword,deleteDriver} = require("../../../controllers/admin/driver.controller");
+const {addDriver,getAllDrivers,updateDriver,changePassword,deleteDriver, getDriverByID} = require("../../../controllers/admin/driver.controller");
 router.get("/", getAllDrivers);
+router.get("/:id", getDriverByID);
 router.post("/add", addDriver);
 router.patch("/:id",updateDriver);
 router.patch("/pass/:id",changePassword);

@@ -1,5 +1,0 @@
-POST http://localhost:55555/users/routes HTTP/1.1
-content-type: application/json
-authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg3MDMzNjExLCJleHAiOjE2ODcxMjAwMTF9.xBQ-JJ7YSS9u3VkzbnF0KPxDWc_QuOJskElRNrLa33M
-
-{"pointA": {"lng": 58.393578749939586,"lat": 37.941717303752895},"pointB": {"lng": 58.42456762379368,"lat": 37.94456257895457}}
