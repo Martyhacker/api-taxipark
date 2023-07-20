@@ -1,6 +1,6 @@
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
-const { Driver, User, Order } = require("../../models/");
+const { Driver, User, Order, Review } = require("../../models/");
 const { driver_search } = require("../../utils/search_body");
 const bcrypt = require("bcryptjs");
 require("dotenv").config();
@@ -25,6 +25,12 @@ exports.getDriverByID = catchAsync(async (req, res, next) => {
     const driver = await Driver.findOne({ where: { id: req.params.id } });
     if (!driver)
         return next(new AppError("This driver not found", 404));
+    const {count, rows} = await Review.findAndCountAll({where: {driverId: driver.id}});
+    var rating = 0;
+    rows.forEach(element => {
+        rating += element.point;
+    });
+    driver.setDataValue("rating", rating/count);
     return res.status(200).send(driver);
 });
 exports.addDriver = catchAsync(async (req, res, next) => {

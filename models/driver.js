@@ -7,7 +7,11 @@ const bcrypt = require("bcryptjs");
 require("dotenv").config();
 module.exports = (sequelize, DataTypes) => {
   class Driver extends Model {
-    static associate({Order}) {
+    static associate({ Order, Review }) {
+      this.hasMany(Review, {
+        foreignKey: "driverId",
+        as: "reviews"
+      });
       this.hasMany(Order, {
         foreignKey: "driverId",
         as: "orders"

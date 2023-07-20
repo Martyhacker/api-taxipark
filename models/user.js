@@ -6,7 +6,11 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-    static associate({Order}) {
+    static associate({Order, Review}) {
+      this.hasMany(Review, {
+        foreignKey: "userId",
+        as: "reviews"
+      });
       this.hasMany(Order, {
         foreignKey: "userId",
         as: "orders"
