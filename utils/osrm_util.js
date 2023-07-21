@@ -10,8 +10,8 @@ exports.pathfinder = async(pointA, pointB) => {
     // return res;
 }
 exports.pointfinder = async(lat, lng, keyword) => {
-    const search_url = `https://nominatim.openstreetmap.org/search?q=${keyword}&format=jsonv2&addressdetails=1`;
-    const point_url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=jsonv2&accept-language=tk`
+    const search_url = `https://nominatim.openstreetmap.org/search?q=${keyword}&format=jsonv2&addressdetails=1&countrycodes=tm`;
+    const point_url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=jsonv2&accept-language=ru`
     const url = keyword ? search_url : point_url;
     const res = await axios({
         method: "GET",

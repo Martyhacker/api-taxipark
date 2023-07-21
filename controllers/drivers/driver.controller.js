@@ -12,6 +12,7 @@ exports.getProfile = catchAsync(async(req,res,next)=>{
     rows.forEach(element => {
         rating += element.point;
     });
+    await driver.update({rating: rating/count});
     driver.setDataValue("rating", rating/count);
     return res.status(200).send(driver);
 })

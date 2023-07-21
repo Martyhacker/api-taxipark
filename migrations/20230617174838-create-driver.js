@@ -15,6 +15,10 @@ module.exports = {
       password: {
         type: Sequelize.STRING
       },
+      rating: {
+        type: Sequelize.REAL,
+        defaultValue: 5
+      },
       phone: {
         type: Sequelize.STRING
       },

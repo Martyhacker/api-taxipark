@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     password: DataTypes.STRING,
     phone: DataTypes.STRING,
+    rating: {
+      type: DataTypes.REAL,
+      defaultValue: 5
+    },
     isAvailable: {
       type: DataTypes.BOOLEAN,
       defaultValue: true

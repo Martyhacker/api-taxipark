@@ -33,7 +33,7 @@ exports.sendNotificationToTopic = (topic, title, body) => {
         // });
     }
 }
-exports.sendNotification = async (to, title, body) => {
+exports.sendNotification = (to, title, body) => {
     try {
         const messages = [];
         messages.push({

@@ -20,6 +20,10 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     start: DataTypes.STRING,
     destination: DataTypes.STRING,
+    price: {
+      type: DataTypes.REAL,
+      defaultValue: 20
+    },
     distance: DataTypes.REAL,
     start_lat: DataTypes.REAL,
     start_lon: DataTypes.REAL,

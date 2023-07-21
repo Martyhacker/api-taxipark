@@ -1,9 +1,17 @@
 const catchAsync = require("../../utils/catchAsync");
 const AppError = require("../../utils/appError");
-const { Order, Sequelize } = require("../../models");
-
+const { Order, Sequelize,Driver, Review } = require("../../models");
+const {Op} = require("sequelize");
 exports.getAllOrders = catchAsync(async (req, res, next) => {
-    const { count, rows } = await Order.findAndCountAll({});
+    const {status,offset} = req.query;
+    const limit = req.query.limit || 20;
+    var where = {};
+    where.userId = req.user.id;
+    if (status && status == "ACTIVES") where.status = { [Op.or]: ["ACCEPTED", "WAITING"] };
+    if (status && status != "ACTIVES") where.status = status;
+    const { count, rows } = await Order.findAndCountAll({
+        limit, offset, where, include: [{model: Driver, as: "driver", attributes: ["username", "phone", "rating"]}]
+    });
     return res.status(200).json({ count, data: rows });
 })
 exports.getOrder = catchAsync(async (req, res, next) => {
